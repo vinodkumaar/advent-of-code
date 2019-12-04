@@ -5,7 +5,7 @@ truncateInstructionsToOpcode99 = { instructions ->
                                         opcode99Index = instructions.findIndexOf {instruction -> 
                                                 instruction[0] == 99
                                          }
-                                         return instructions[0..opcode99Index-1]
+                                         return instructions.take(opcode99Index)
                                   }
 
 
