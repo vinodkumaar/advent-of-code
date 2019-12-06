@@ -74,12 +74,16 @@ wire1 = ["R999","U626","R854","D200","R696","D464","R54","D246","L359","U57","R9
 wire2 = ["L996","U383","L962","U100","L836","D913","R621","U739","R976","D397","L262","D151","L12","U341","R970","U123","L713","U730","L52","D223","L190","D81","R484","D777","R374","U755","R640","D522","R603","D815","R647","U279","R810","U942","R314","D19","L938","U335","R890","U578","R273","U338","R186","D271","L230","U90","R512","U672","R666","D328","L970","U17","R368","D302","L678","D508","L481","U12","L783","D409","L315","D579","L517","D729","R961","D602","R253","D746","R418","D972","R195","D270","L46","D128","L124","U875","R632","D788","L576","U695","R159","U704","R599","D597","R28","D703","L18","D879","L417","U633","L56","U302","R289","U916","R820","D55","R213","U712","R250","D265","L935","D171","L680","U738","L361","D939","R547","D606","L255","U880","R968","U255","R902","D624","L251","U452","L412","D60","L996","D140","L971","U196","R796","D761","L54","U54","L98","D758","L521","U578","L861","U365","L901","D495","L234","D124","L121","D329","L38","U481","L491","D938","L840","D311","L993","D954","R654","U925","L528","D891","L994","D681","L879","D476","L933","U515","L292","U626","R348","D963","L145","U230","L114","D11","R651","D929","R318","D672","R125","D827","L590","U338","L755","D925","L577","D52","R131","D465","R657","D288","R22","D363","R162","D545","L904","D457","R987","D389","L566","D931","L773","D53","R162","U271","L475","U666","L594","U733","R279","D847","R359","U320","R450","D704","L698","D173","R35","D267","L165","D66","L301","U879","R862","U991","R613","D489","L326","D393","R915","U718","R667","U998","R554","U199","R300","U693","R753","U938","R444","U12","L844","D912","R297","D668","R366","U710","L821","U384","R609","D493","R233","U898","R407","U683","R122","U790","L1","U834","L76","U572","R220","U752","L728","D85","L306","D805","R282","U507","R414","D687","L577","U174","L211","U308","L15","U483","R741","D828","L588","D192","L409","D605","L931","U260","L239","D424","L846","U429","L632","U122","L266","D544","R248","U188","R465","U721","R621","U3","L884","U361","L322","U504","R999","U381","R327","U555","L467","D849","R748","U175","R356"]
 
 drawnWirePoints1 = wire1.inject([['x':0,'y':0]]) { drawnWire, instruction ->
-                                    drawnWire + drawWire(drawnWire[-1],instruction) }
+                                    drawnWire + drawWire(drawnWire[-1],instruction)[1..-1] }
                                     
 drawnWirePoints2 = wire2.inject([['x':0,'y':0]]) { drawnWire, instruction ->
-                                   drawnWire + drawWire(drawnWire[-1],instruction) }
+                                   drawnWire + drawWire(drawnWire[-1],instruction)[1..-1] }
                                                                        
 wireIntersections = intersections(drawnWirePoints1, drawnWirePoints2)
+
+stepsToIntersections = wireIntersections.collect() { intersection -> 
+                                                         drawnWirePoints1.indexOf(intersection) + drawnWirePoints2.indexOf(intersection) 
+                                                   }
 
 manhattanDistances = toManhattanDistance(wireIntersections, ['x':0,'y':0])
 
@@ -87,3 +91,7 @@ manhattanDistances.removeAll {it == 0}
 
 manhattanDistances.sort()
 
+stepsToIntersections.sort()
+
+println manhattanDistances[0]
+println stepsToIntersections[0]
